@@ -25,6 +25,9 @@
     <Filter Include="PluginObjects">
       <UniqueIdentifier>{7AEAD2DA-AA55-4789-B532-2C18A84C8F81}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Plugin Kernel\Synth Core">
+      <UniqueIdentifier>{11169364-3fbd-4b9f-aa4b-fca250dc9526}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\RAFX2 Source\RackAFXDLL.cpp">
@@ -116,8 +119,11 @@
     <ClInclude Include="..\CustomControls\readerwriterqueue.h">
       <Filter>CustomControls</Filter>
     </ClInclude>
+    <ClInclude Include="synthfunctions.h">
+      <Filter>Plugin Kernel\Synth Core</Filter>
+    </ClInclude>
   </ItemGroup>
-  <ItemGroup> 
+  <ItemGroup>
     <None Include="..\Resources\PluginGUI.uidesc">
       <Filter>Resources</Filter>
     </None>
@@ -128,4 +134,3 @@
     </ResourceCompile>
   </ItemGroup>
 </Project>
-
