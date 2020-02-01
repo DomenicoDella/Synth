@@ -65,8 +65,50 @@ bool PluginCore::initPluginParameters()
     // --- Add your plugin parameter instantiation code bewtween these hex codes
 	// **--0xDEA7--**
 
-    
-    
+
+	// --- Declaration of Plugin Parameter Objects 
+	PluginParameter* piParam = nullptr;
+
+	// --- continuous control: Frecuencia
+	piParam = new PluginParameter(controlID::m_fFrecuencia, "Frecuencia", "Hz", controlVariableType::kDouble, 120.000000, 1000.000000, 440.000000, taper::kLinearTaper);
+	piParam->setParameterSmoothing(false);
+	piParam->setSmoothingTimeMsec(100.00);
+	piParam->setBoundVariable(&m_fFrecuencia, boundVariableType::kDouble);
+	addPluginParameter(piParam);
+
+	// --- discrete control: Oscilator
+	piParam = new PluginParameter(controlID::m_uOscType, "Oscilator", "Saw,Square,Triangle", "Saw");
+	piParam->setBoundVariable(&m_uOscType, boundVariableType::kInt);
+	piParam->setIsDiscreteSwitch(true);
+	addPluginParameter(piParam);
+
+	// --- continuous control: Duty Cycle
+	piParam = new PluginParameter(controlID::m_fDutyC, "Duty Cycle", "%", controlVariableType::kDouble, 20.000000, 80.000000, 50.000000, taper::kLinearTaper);
+	piParam->setParameterSmoothing(false);
+	piParam->setSmoothingTimeMsec(100.00);
+	piParam->setBoundVariable(&m_fDutyC, boundVariableType::kDouble);
+	addPluginParameter(piParam);
+
+	// --- Aux Attributes
+	AuxParameterAttribute auxAttribute;
+
+	// --- RAFX GUI attributes
+	// --- controlID::m_fFrecuencia
+	auxAttribute.reset(auxGUIIdentifier::guiControlData);
+	auxAttribute.setUintAttribute(2147483651);
+	setParamAuxAttribute(controlID::m_fFrecuencia, auxAttribute);
+
+	// --- controlID::m_uOscType
+	auxAttribute.reset(auxGUIIdentifier::guiControlData);
+	auxAttribute.setUintAttribute(805306368);
+	setParamAuxAttribute(controlID::m_uOscType, auxAttribute);
+
+	// --- controlID::m_fDutyC
+	auxAttribute.reset(auxGUIIdentifier::guiControlData);
+	auxAttribute.setUintAttribute(2147483648);
+	setParamAuxAttribute(controlID::m_fDutyC, auxAttribute);
+
+
 	// **--0xEDA5--**
    
     // --- BONUS Parameter
@@ -163,13 +205,44 @@ bool PluginCore::processAudioFrame(ProcessFrameInfo& processFrameInfo)
 	// --- Synth Plugin --- remove for FX plugins
 	if (getPluginType() == kSynthPlugin)
 	{
+		// --- Oscilators
+
+		m_fs = audioProcDescriptor.sampleRate;
+		//double m_fs = 44100;
+		m_fo = m_fFrecuencia;
+		m_inc = m_fo / m_fs;
+
+		m_PW = m_fDutyC;
+
+		if (compareEnumToInt(m_uOscTypeEnum::Saw, m_uOscType))
+		{
+			m_outputL = t_saw();
+			m_outputR = t_saw();
+		}
+		else if (compareEnumToInt(m_uOscTypeEnum::Square, m_uOscType))
+		{
+			m_outputL = t_sqw();
+			m_outputR = t_sqw();
+		}
+		else if (compareEnumToInt(m_uOscTypeEnum::Triangle, m_uOscType))
+		{
+			m_outputL = t_tri();
+			m_outputR = t_tri();
+		}
+		
+
+		
 		// --- output silence: change this with your signal render code
-		processFrameInfo.audioOutputFrame[0] = 0.0;
+		processFrameInfo.audioOutputFrame[0] = m_outputL;
 		if (processFrameInfo.channelIOConfig.outputChannelFormat == kCFStereo)
-			processFrameInfo.audioOutputFrame[1] = 0.0;
+			processFrameInfo.audioOutputFrame[1] = m_outputR;
 
 		return true;	/// processed
 	}
+
+	
+	
+
 
     // --- FX Plugin:
     if(processFrameInfo.channelIOConfig.inputChannelFormat == kCFMono &&
@@ -447,6 +520,19 @@ bool PluginCore::initPluginPresets()
 {
 	// **--0xFF7A--**
 
+	// --- Plugin Presets 
+	int index = 0;
+	PresetInfo* preset = nullptr;
+
+	// --- Preset: Factory Preset
+	preset = new PresetInfo(index++, "Factory Preset");
+	initPresetParameters(preset->presetParameters);
+	setPresetParameter(preset->presetParameters, controlID::m_fFrecuencia, 440.000000);
+	setPresetParameter(preset->presetParameters, controlID::m_uOscType, 0.000000);
+	setPresetParameter(preset->presetParameters, controlID::m_fDutyC, -0.000000);
+	addPreset(preset);
+
+
 	// **--0xA7FF--**
 
     return true;
@@ -506,4 +592,3 @@ const char* PluginCore::getAUCocoaViewFactoryName(){ return AU_COCOA_VIEWFACTORY
 pluginType PluginCore::getPluginType(){ return kPluginType; }
 const char* PluginCore::getVSTFUID(){ return kVSTFUID; }
 int32_t PluginCore::getFourCharCode(){ return kFourCharCode; }
-

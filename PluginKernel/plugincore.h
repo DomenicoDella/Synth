@@ -15,10 +15,18 @@
 
 #include "pluginbase.h"
 
+
 // **--0x7F1F--**
 
+// --- Plugin Variables controlID Enumeration 
 
-// **--0x0F1F--**
+enum controlID {
+	m_fFrecuencia = 0,
+	m_uOscType = 10,
+	m_fDutyC = 1
+};
+
+	// **--0x0F1F--**
 
 /**
 \class PluginCore
@@ -98,13 +106,101 @@ public:
 
 	// --- BEGIN USER VARIABLES AND FUNCTIONS -------------------------------------- //
 	//	   Add your variables and methods here
+	
+	double m_outputR = 0.0;
+	double m_outputL = 0.0;
 
+	double m_fs = audioProcDescriptor.sampleRate;
+	double m_modulo = 0.0;
+	double m_fo = 440.0;
+	double m_PW = 50.0;
+	double m_inc = m_fo / m_fs;
+
+	//Trival_saw_oscilator
+	double t_saw(void) 
+	{
+		//check for modulo wrap test 
+		if (m_modulo >= 1.0)
+		{
+			m_modulo -= 1.0; //wrap
+		}
+
+		//incremet the couter
+		m_modulo += m_inc;
+
+		//modulo wrap test
+		if (m_modulo >= 1.0)
+		{
+			m_modulo -= 1.0; //wrap
+		}
+
+		//unipolar to bipolar
+		double wave = 2.0 * m_modulo - 1.0;
+
+		return wave;
+	}
+
+	//Trival square wave
+	double t_sqw(void)
+	{
+		//check for modulo wrap test 
+		if (m_modulo >= 1.0)
+		{
+			m_modulo -= 1.0; //wrap
+		}
+
+		//incremet the couter
+		m_modulo += m_inc;
+
+		//modulo wrap test
+		if (m_modulo >= 1.0)
+		{
+			m_modulo -= 1.0; //wrap
+		}
+
+		//unipolar to bipolar
+		double wave = m_modulo > m_PW / 100.0 ? -1.0 : 1.0;
+
+		return wave;
+	}
+
+	//Trival triagle wave
+	double t_tri(void)
+	{
+		//check for modulo wrap test 
+		if (m_modulo >= 1.0)
+		{
+			m_modulo -= 1.0; //wrap
+		}
+
+		//incremet the couter
+		m_modulo += m_inc;
+
+		//modulo wrap test
+		if (m_modulo >= 1.0)
+		{
+			m_modulo -= 1.0; //wrap
+		}
+
+		//unipolar to bipolar
+		double wave = 2.0*fabs(2.0*m_modulo-1.0)-1.0;
+
+		return wave;
+	}
 
 
 	// --- END USER VARIABLES AND FUNCTIONS -------------------------------------- //
 
 private:
 	//  **--0x07FD--**
+
+	// --- Continuous Plugin Variables 
+	double m_fFrecuencia = 0.0;
+	double m_fDutyC = 0.0;
+
+	// --- Discrete Plugin Variables 
+	int m_uOscType = 0;
+	enum class m_uOscTypeEnum { Saw,Square,Triangle };	// to compare: if(compareEnumToInt(m_uOscTypeEnum::Saw, m_uOscType)) etc... 
 
 	// **--0x1A7F--**
     // --- end member variables
