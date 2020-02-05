@@ -107,6 +107,9 @@ public:
 	// --- BEGIN USER VARIABLES AND FUNCTIONS -------------------------------------- //
 	//	   Add your variables and methods here
 	
+	double m_preProcessR = 0.0;
+	double m_preProcessL = 0.0;
+
 	double m_outputR = 0.0;
 	double m_outputL = 0.0;
 
@@ -115,6 +118,8 @@ public:
 	double m_fo = 440.0;
 	double m_PW = 50.0;
 	double m_inc = m_fo / m_fs;
+	double m_height = 0.0;
+
 
 	//Trival_saw_oscilator
 	double t_saw(void) 
@@ -126,7 +131,7 @@ public:
 		}
 
 		//incremet the couter
-		m_modulo += m_inc;
+		m_modulo += m_inc/2;
 
 		//modulo wrap test
 		if (m_modulo >= 1.0)
@@ -150,7 +155,7 @@ public:
 		}
 
 		//incremet the couter
-		m_modulo += m_inc;
+		m_modulo += m_inc/2;
 
 		//modulo wrap test
 		if (m_modulo >= 1.0)
@@ -174,7 +179,7 @@ public:
 		}
 
 		//incremet the couter
-		m_modulo += m_inc;
+		m_modulo += m_inc/2;
 
 		//modulo wrap test
 		if (m_modulo >= 1.0)
@@ -186,6 +191,40 @@ public:
 		double wave = 2.0*fabs(2.0*m_modulo-1.0)-1.0;
 
 		return wave;
+	}
+
+	//polyBLEP
+	double doPolyBlep(double modulo, double inc, double height, bool risingEdge)
+	{
+		double PolyBLEP = 0.0;
+
+		//--- LEFT side of discontinuity
+		if (modulo > 1.0-inc)
+		{
+			//--- calculate distance
+			double t = (modulo - 1.0) / inc;
+
+			//--- calculate residual
+			PolyBLEP = height * (t * t + 2.0 * t + 1.0);
+		}
+
+		//--- RIGHT side of discontinuty
+		else if (modulo < inc)
+		{
+			//--- calculate distance
+			double t = modulo / inc;
+
+			//--- calculate residual
+			PolyBLEP = height * (2.0 * t - t * t - 1.0);
+		}
+
+		//--- subtract fo falling, add for rising edge
+		if (!risingEdge)
+		{
+			PolyBLEP *= -1.0;
+		}
+
+		return PolyBLEP;
 	}
 
 
@@ -200,7 +239,7 @@ private:
 
 	// --- Discrete Plugin Variables 
 	int m_uOscType = 0;
-	enum class m_uOscTypeEnum { Saw,Square,Triangle };	// to compare: if(compareEnumToInt(m_uOscTypeEnum::Saw, m_uOscType)) etc... 
+	enum class m_uOscTypeEnum { Saw_raw,Saw,Square,Triangle,Sin };	// to compare: if(compareEnumToInt(m_uOscTypeEnum::Saw_raw, m_uOscType)) etc... 
 
 	// **--0x1A7F--**
     // --- end member variables

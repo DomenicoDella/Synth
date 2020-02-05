@@ -70,14 +70,14 @@ bool PluginCore::initPluginParameters()
 	PluginParameter* piParam = nullptr;
 
 	// --- continuous control: Frecuencia
-	piParam = new PluginParameter(controlID::m_fFrecuencia, "Frecuencia", "Hz", controlVariableType::kDouble, 120.000000, 1000.000000, 440.000000, taper::kLinearTaper);
+	piParam = new PluginParameter(controlID::m_fFrecuencia, "Frecuencia", "Hz", controlVariableType::kDouble, 120.000000, 12000.000000, 440.000000, taper::kLinearTaper);
 	piParam->setParameterSmoothing(false);
 	piParam->setSmoothingTimeMsec(100.00);
 	piParam->setBoundVariable(&m_fFrecuencia, boundVariableType::kDouble);
 	addPluginParameter(piParam);
 
 	// --- discrete control: Oscilator
-	piParam = new PluginParameter(controlID::m_uOscType, "Oscilator", "Saw,Square,Triangle", "Saw");
+	piParam = new PluginParameter(controlID::m_uOscType, "Oscilator", "Saw raw,Saw,Square,Triangle,Sin", "Sin");
 	piParam->setBoundVariable(&m_uOscType, boundVariableType::kInt);
 	piParam->setIsDiscreteSwitch(true);
 	addPluginParameter(piParam);
@@ -211,16 +211,26 @@ bool PluginCore::processAudioFrame(ProcessFrameInfo& processFrameInfo)
 		//double m_fs = 44100;
 		m_fo = m_fFrecuencia;
 		m_inc = m_fo / m_fs;
-
 		m_PW = m_fDutyC;
 
+		
+
 		if (compareEnumToInt(m_uOscTypeEnum::Saw, m_uOscType))
+		{
+			//m_outputL = t_saw();
+			//m_outputR = t_saw();
+
+			m_outputL = t_saw() + doPolyBlep(m_modulo, m_inc, 1.0, false);
+			m_outputR = t_saw() + doPolyBlep(m_modulo, m_inc, 1.0, false);
+		}
+		else if (compareEnumToInt(m_uOscTypeEnum::Saw_raw, m_uOscType))
 		{
 			m_outputL = t_saw();
 			m_outputR = t_saw();
 		}
 		else if (compareEnumToInt(m_uOscTypeEnum::Square, m_uOscType))
 		{
+			
 			m_outputL = t_sqw();
 			m_outputR = t_sqw();
 		}
@@ -228,6 +238,12 @@ bool PluginCore::processAudioFrame(ProcessFrameInfo& processFrameInfo)
 		{
 			m_outputL = t_tri();
 			m_outputR = t_tri();
+		}
+		else if (compareEnumToInt(m_uOscTypeEnum::Sin, m_uOscType))
+		{
+			m_modulo += m_inc;
+			m_outputL = sin(m_modulo*2*3.1417);
+			m_outputR = sin(m_modulo*2*3.1416);
 		}
 		
 
@@ -528,8 +544,8 @@ bool PluginCore::initPluginPresets()
 	preset = new PresetInfo(index++, "Factory Preset");
 	initPresetParameters(preset->presetParameters);
 	setPresetParameter(preset->presetParameters, controlID::m_fFrecuencia, 440.000000);
-	setPresetParameter(preset->presetParameters, controlID::m_uOscType, 0.000000);
-	setPresetParameter(preset->presetParameters, controlID::m_fDutyC, -0.000000);
+	setPresetParameter(preset->presetParameters, controlID::m_uOscType, 3.000000);
+	setPresetParameter(preset->presetParameters, controlID::m_fDutyC, 50.000000);
 	addPreset(preset);
 
 
