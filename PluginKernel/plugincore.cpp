@@ -70,7 +70,7 @@ bool PluginCore::initPluginParameters()
 	PluginParameter* piParam = nullptr;
 
 	// --- continuous control: Frecuencia
-	piParam = new PluginParameter(controlID::m_fFrecuencia, "Frecuencia", "Hz", controlVariableType::kDouble, 120.000000, 12000.000000, 440.000000, taper::kLinearTaper);
+	piParam = new PluginParameter(controlID::m_fFrecuencia, "Frecuencia", "Hz", controlVariableType::kDouble, 120.000000, 2000.000000, 440.000000, taper::kLinearTaper);
 	piParam->setParameterSmoothing(false);
 	piParam->setSmoothingTimeMsec(100.00);
 	piParam->setBoundVariable(&m_fFrecuencia, boundVariableType::kDouble);
@@ -213,42 +213,11 @@ bool PluginCore::processAudioFrame(ProcessFrameInfo& processFrameInfo)
 		m_inc = m_fo / m_fs;
 		m_PW = m_fDutyC;
 
-		reModulo();
+		m_modulo = reModulo(m_modulo,m_inc);
 
 
-		if (compareEnumToInt(m_uOscTypeEnum::Saw, m_uOscType))
-		{
-			m_outputL = t_saw(m_modulo) + doPolyBlep(m_modulo, m_inc, 1.0, false);
-			m_outputR = t_saw(m_modulo) + doPolyBlep(m_modulo, m_inc, 1.0, false);
-		}
-		else if (compareEnumToInt(m_uOscTypeEnum::Saw_raw, m_uOscType))
-		{
-			m_outputL = t_saw(m_modulo);
-			m_outputR = t_saw(m_modulo);
-		}
-		else if (compareEnumToInt(m_uOscTypeEnum::Square_Raw, m_uOscType))
-		{
-			m_outputL = t_sqw(m_modulo);
-			m_outputR = t_sqw(m_modulo);
-		}
-		else if (compareEnumToInt(m_uOscTypeEnum::Square, m_uOscType))
-		{
-			double preSquare = t_saw(m_modulo) + doPolyBlep(m_modulo, m_inc, 1.0, false);
-			double preSquareNeg = t_saw((m_modulo - m_fDutyC/100)) + doPolyBlep(m_modulo - m_fDutyC / 100, m_inc, 1.0, false);
-			m_outputL = preSquare - preSquareNeg;
-			m_outputR = preSquare - preSquareNeg;
-		}
-		else if (compareEnumToInt(m_uOscTypeEnum::Triangle, m_uOscType))
-		{
-			m_outputL = t_tri(m_modulo);
-			m_outputR = t_tri(m_modulo);
-		}
-		else if (compareEnumToInt(m_uOscTypeEnum::Sin, m_uOscType))
-		{
-			m_outputL = sin(m_modulo * 2 * 3.1417);
-			m_outputR = sin(m_modulo * 2 * 3.1416);
-		}
-
+		m_outputL = waveSel(m_modulo,m_inc,m_fDutyC,m_uOscType);
+		m_outputR = waveSel(m_modulo,m_inc,m_fDutyC,m_uOscType);
 		
 
 		
@@ -548,7 +517,7 @@ bool PluginCore::initPluginPresets()
 	preset = new PresetInfo(index++, "Factory Preset");
 	initPresetParameters(preset->presetParameters);
 	setPresetParameter(preset->presetParameters, controlID::m_fFrecuencia, 440.000000);
-	setPresetParameter(preset->presetParameters, controlID::m_uOscType, 4.000000);
+	setPresetParameter(preset->presetParameters, controlID::m_uOscType, 5.000000);
 	setPresetParameter(preset->presetParameters, controlID::m_fDutyC, 50.000000);
 	addPreset(preset);
 

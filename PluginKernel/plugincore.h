@@ -21,9 +21,9 @@
 // --- Plugin Variables controlID Enumeration 
 
 enum controlID {
-	m_fFrecuencia = 0,
-	m_uOscType = 10,
-	m_fDutyC = 1
+	m_fFrecuencia = 12,
+	m_uOscType = 2,
+	m_fDutyC = 13
 };
 
 	// **--0x0F1F--**
@@ -122,23 +122,24 @@ public:
 
 
 	//Refresh modulo
-	void reModulo(void)
+	double reModulo(double modulo, double inc)
 	{
 		//check for modulo wrap test 
-		if (m_modulo >= 1.0)
+		if (modulo >= 1.0)
 		{
-			m_modulo -= 1.0; //wrap
+			modulo -= 1.0; //wrap
 		}
 
-		m_modulo += m_inc;
+		modulo += inc;
 
 		//check for modulo wrap test 
-		if (m_modulo >= 1.0)
+		if (modulo >= 1.0)
 		{
-			m_modulo -= 1.0; //wrap
+			modulo -= 1.0; //wrap
 		}
-	}
 
+		return modulo;
+	}
 
 	//Trival_saw_oscilator
 	double t_saw(double modulo)
@@ -151,11 +152,11 @@ public:
 	}
 
 	//Trival square wave
-	double t_sqw(double modulo)
+	double t_sqw(double modulo, double DutyC)
 	{
 
 		//unipolar to bipolar
-		double wave = modulo > m_PW / 100.0 ? -1.0 : 1.0;
+		double wave = modulo > DutyC / 100.0 ? -1.0 : 1.0;
 
 		return wave;
 	}
@@ -201,6 +202,49 @@ public:
 		}
 
 		return PolyBLEP;
+	}
+
+	//Signal Select
+	double waveSel(double moduloSel,double incSel, double DutyCSel, double OscMode)
+	{
+		double outputL = 0.0;
+		double outputR = 0.0;
+
+		if (compareEnumToInt(m_uOscTypeEnum::Saw, OscMode))
+		{ 
+			outputL = t_saw(moduloSel) + doPolyBlep(moduloSel, incSel, 1.0, false);
+			outputR = t_saw(moduloSel) + doPolyBlep(moduloSel, incSel, 1.0, false);
+		}
+		else if (compareEnumToInt(m_uOscTypeEnum::Saw_raw, OscMode))
+		{
+			outputL = t_saw(moduloSel);
+			outputR = t_saw(moduloSel);
+		}
+		else if (compareEnumToInt(m_uOscTypeEnum::Square_Raw, OscMode))
+		{
+			outputL = t_sqw(moduloSel,DutyCSel);
+			outputR = t_sqw(moduloSel,DutyCSel);
+		}
+		else if (compareEnumToInt(m_uOscTypeEnum::Square, OscMode))
+		{
+			double preSquare = t_saw(moduloSel) + doPolyBlep(moduloSel, incSel, 1.0, false);
+			double preSquareNeg = t_saw((moduloSel - DutyCSel / 100)) + doPolyBlep(moduloSel - DutyCSel / 100, incSel, 1.0, false);
+			outputL = preSquare - preSquareNeg;
+			outputR = preSquare - preSquareNeg;
+		}
+		else if (compareEnumToInt(m_uOscTypeEnum::Triangle, OscMode))
+		{
+			outputL = t_tri(moduloSel);
+			outputR = t_tri(moduloSel);
+		}
+		else if (compareEnumToInt(m_uOscTypeEnum::Sin, OscMode))
+		{
+			outputL = sin(moduloSel * 2 * 3.1417);
+			outputR = sin(moduloSel * 2 * 3.1416);
+		}
+
+		return outputL, outputR;
+
 	}
 
 
