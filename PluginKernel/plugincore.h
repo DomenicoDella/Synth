@@ -23,7 +23,11 @@
 enum controlID {
 	m_fFrecuencia = 12,
 	m_uOscType = 2,
-	m_fDutyC = 13
+	m_fDutyC = 13,
+	m_uLFOSel = 5,
+	m_fLFOFreq = 15,
+	m_fLFODutyC = 16,
+	m_uFLOon = 6
 };
 
 	// **--0x0F1F--**
@@ -114,11 +118,17 @@ public:
 	double m_outputL = 0.0;
 
 	double m_fs = audioProcDescriptor.sampleRate;
-	double m_modulo = 0.0;
-	double m_fo = 440.0;
-	double m_PW = 50.0;
-	double m_inc = m_fo / m_fs;
-	double m_height = 0.0;
+
+	//Oscilator Variables
+	double m_moduloOsc = 0.0;
+	double m_foOsc = 440.0;
+	double m_incOsc = m_foOsc / m_fs;
+
+	//LFO variables
+	double m_moduloLFO = 0.0;
+	double m_foLFO = 440.0;
+	double m_incLFO = m_foLFO / m_fs;
+
 
 
 	//Refresh modulo
@@ -256,10 +266,18 @@ private:
 	// --- Continuous Plugin Variables 
 	double m_fFrecuencia = 0.0;
 	double m_fDutyC = 0.0;
+	double m_fLFOFreq = 0.0;
+	double m_fLFODutyC = 0.0;
 
 	// --- Discrete Plugin Variables 
 	int m_uOscType = 0;
 	enum class m_uOscTypeEnum { Saw_raw,Saw,Square_Raw,Square,Triangle,Sin };	// to compare: if(compareEnumToInt(m_uOscTypeEnum::Saw_raw, m_uOscType)) etc... 
+
+	int m_uLFOSel = 0;
+	enum class m_uLFOSelEnum { Saw_raw,Saw,Square_Raw,Square,Triangle,Sin };	// to compare: if(compareEnumToInt(m_uLFOSelEnum::Saw_raw, m_uLFOSel)) etc... 
+
+	int m_uFLOon = 0;
+	enum class m_uFLOonEnum { SWITCH_OFF,SWITCH_ON };	// to compare: if(compareEnumToInt(m_uFLOonEnum::SWITCH_OFF, m_uFLOon)) etc... 
 
 	// **--0x1A7F--**
     // --- end member variables

@@ -89,6 +89,32 @@ bool PluginCore::initPluginParameters()
 	piParam->setBoundVariable(&m_fDutyC, boundVariableType::kDouble);
 	addPluginParameter(piParam);
 
+	// --- discrete control: LFO wave
+	piParam = new PluginParameter(controlID::m_uLFOSel, "LFO wave", "Saw raw,Saw,Square Raw,Square,Triangle,Sin", "Sin");
+	piParam->setBoundVariable(&m_uLFOSel, boundVariableType::kInt);
+	piParam->setIsDiscreteSwitch(true);
+	addPluginParameter(piParam);
+
+	// --- continuous control: LFO Freq
+	piParam = new PluginParameter(controlID::m_fLFOFreq, "LFO Freq", "Hz", controlVariableType::kDouble, 0.200000, 5.000000, 0.200000, taper::kLinearTaper);
+	piParam->setParameterSmoothing(false);
+	piParam->setSmoothingTimeMsec(100.00);
+	piParam->setBoundVariable(&m_fLFOFreq, boundVariableType::kDouble);
+	addPluginParameter(piParam);
+
+	// --- continuous control: LFO Duty Cycle
+	piParam = new PluginParameter(controlID::m_fLFODutyC, "LFO Duty Cycle", "Units", controlVariableType::kDouble, 20.000000, 80.000000, 50.000000, taper::kLinearTaper);
+	piParam->setParameterSmoothing(false);
+	piParam->setSmoothingTimeMsec(100.00);
+	piParam->setBoundVariable(&m_fLFODutyC, boundVariableType::kDouble);
+	addPluginParameter(piParam);
+
+	// --- discrete control: FLO
+	piParam = new PluginParameter(controlID::m_uFLOon, "FLO", "SWITCH OFF,SWITCH ON", "SWITCH OFF");
+	piParam->setBoundVariable(&m_uFLOon, boundVariableType::kInt);
+	piParam->setIsDiscreteSwitch(true);
+	addPluginParameter(piParam);
+
 	// --- Aux Attributes
 	AuxParameterAttribute auxAttribute;
 
@@ -107,6 +133,26 @@ bool PluginCore::initPluginParameters()
 	auxAttribute.reset(auxGUIIdentifier::guiControlData);
 	auxAttribute.setUintAttribute(2147483648);
 	setParamAuxAttribute(controlID::m_fDutyC, auxAttribute);
+
+	// --- controlID::m_uLFOSel
+	auxAttribute.reset(auxGUIIdentifier::guiControlData);
+	auxAttribute.setUintAttribute(805306368);
+	setParamAuxAttribute(controlID::m_uLFOSel, auxAttribute);
+
+	// --- controlID::m_fLFOFreq
+	auxAttribute.reset(auxGUIIdentifier::guiControlData);
+	auxAttribute.setUintAttribute(2147483655);
+	setParamAuxAttribute(controlID::m_fLFOFreq, auxAttribute);
+
+	// --- controlID::m_fLFODutyC
+	auxAttribute.reset(auxGUIIdentifier::guiControlData);
+	auxAttribute.setUintAttribute(2147483648);
+	setParamAuxAttribute(controlID::m_fLFODutyC, auxAttribute);
+
+	// --- controlID::m_uFLOon
+	auxAttribute.reset(auxGUIIdentifier::guiControlData);
+	auxAttribute.setUintAttribute(1073741829);
+	setParamAuxAttribute(controlID::m_uFLOon, auxAttribute);
 
 
 	// **--0xEDA5--**
@@ -207,19 +253,32 @@ bool PluginCore::processAudioFrame(ProcessFrameInfo& processFrameInfo)
 	{
 		// --- Oscilators
 
+		//Refresh variables
 		m_fs = audioProcDescriptor.sampleRate;
-		//double m_fs = 44100;
-		m_fo = m_fFrecuencia;
-		m_inc = m_fo / m_fs;
-		m_PW = m_fDutyC;
-
-		m_modulo = reModulo(m_modulo,m_inc);
-
-
-		m_outputL = waveSel(m_modulo,m_inc,m_fDutyC,m_uOscType);
-		m_outputR = waveSel(m_modulo,m_inc,m_fDutyC,m_uOscType);
+		//Osc
+		m_foOsc = m_fFrecuencia;
+		m_incOsc = m_foOsc / m_fs;
+		//LFO
+		m_foLFO = m_fLFOFreq;
+		m_incLFO = m_foLFO / m_fs;
 		
+		//Refresh Output
 
+		if (m_uFLOon == 1)
+		{
+			m_outputL = (waveSel(m_moduloLFO, m_incLFO, m_fLFODutyC, m_uLFOSel)) * waveSel(m_moduloOsc, m_incOsc, m_fDutyC, m_uOscType);
+			m_outputR = (waveSel(m_moduloLFO, m_incLFO, m_fLFODutyC, m_uLFOSel)) * waveSel(m_moduloOsc, m_incOsc, m_fDutyC, m_uOscType);
+		}
+		else
+		{
+			m_outputL = waveSel(m_moduloOsc, m_incOsc, m_fDutyC, m_uOscType);
+			m_outputR = waveSel(m_moduloOsc, m_incOsc, m_fDutyC, m_uOscType);
+		}
+		
+		
+		//Increase module
+		m_moduloOsc = reModulo(m_moduloOsc, m_incOsc);
+		m_moduloLFO = reModulo(m_moduloLFO, m_incLFO);
 		
 		// --- output silence: change this with your signal render code
 		processFrameInfo.audioOutputFrame[0] = m_outputL;
@@ -519,6 +578,10 @@ bool PluginCore::initPluginPresets()
 	setPresetParameter(preset->presetParameters, controlID::m_fFrecuencia, 440.000000);
 	setPresetParameter(preset->presetParameters, controlID::m_uOscType, 5.000000);
 	setPresetParameter(preset->presetParameters, controlID::m_fDutyC, 50.000000);
+	setPresetParameter(preset->presetParameters, controlID::m_uLFOSel, 5.000000);
+	setPresetParameter(preset->presetParameters, controlID::m_fLFOFreq, 0.200000);
+	setPresetParameter(preset->presetParameters, controlID::m_fLFODutyC, 50.000000);
+	setPresetParameter(preset->presetParameters, controlID::m_uFLOon, -0.000000);
 	addPreset(preset);
 
 

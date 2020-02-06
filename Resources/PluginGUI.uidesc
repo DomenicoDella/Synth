@@ -24,6 +24,10 @@
 		<control-tag name="controlID::m_fFrecuencia" tag="12" />
 		<control-tag name="controlID::m_uOscType" tag="2" />
 		<control-tag name="controlID::m_fDutyC" tag="13" />
+		<control-tag name="controlID::m_uLFOSel" tag="5" />
+		<control-tag name="controlID::m_fLFOFreq" tag="15" />
+		<control-tag name="controlID::m_fLFODutyC" tag="16" />
+		<control-tag name="controlID::m_uFLOon" tag="6" />
 		<control-tag name="XY_TRACKPAD" tag="131073" />
 		<control-tag name="VECTOR_JOYSTICK" tag="131074" />
 		<control-tag name="PRESET_NAME" tag="131075" />
