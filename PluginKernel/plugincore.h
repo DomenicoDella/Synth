@@ -121,8 +121,8 @@ public:
 	double m_height = 0.0;
 
 
-	//Trival_saw_oscilator
-	double t_saw(void) 
+	//Refresh modulo
+	void reModulo(void)
 	{
 		//check for modulo wrap test 
 		if (m_modulo >= 1.0)
@@ -130,65 +130,41 @@ public:
 			m_modulo -= 1.0; //wrap
 		}
 
-		//incremet the couter
-		m_modulo += m_inc/2;
+		m_modulo += m_inc;
 
-		//modulo wrap test
+		//check for modulo wrap test 
 		if (m_modulo >= 1.0)
 		{
 			m_modulo -= 1.0; //wrap
 		}
+	}
+
+
+	//Trival_saw_oscilator
+	double t_saw(double modulo)
+	{
 
 		//unipolar to bipolar
-		double wave = 2.0 * m_modulo - 1.0;
+		double wave = 2.0 * modulo - 1.0;
 
 		return wave;
 	}
 
 	//Trival square wave
-	double t_sqw(void)
+	double t_sqw(double modulo)
 	{
-		//check for modulo wrap test 
-		if (m_modulo >= 1.0)
-		{
-			m_modulo -= 1.0; //wrap
-		}
-
-		//incremet the couter
-		m_modulo += m_inc/2;
-
-		//modulo wrap test
-		if (m_modulo >= 1.0)
-		{
-			m_modulo -= 1.0; //wrap
-		}
 
 		//unipolar to bipolar
-		double wave = m_modulo > m_PW / 100.0 ? -1.0 : 1.0;
+		double wave = modulo > m_PW / 100.0 ? -1.0 : 1.0;
 
 		return wave;
 	}
 
 	//Trival triagle wave
-	double t_tri(void)
+	double t_tri(double modulo)
 	{
-		//check for modulo wrap test 
-		if (m_modulo >= 1.0)
-		{
-			m_modulo -= 1.0; //wrap
-		}
-
-		//incremet the couter
-		m_modulo += m_inc/2;
-
-		//modulo wrap test
-		if (m_modulo >= 1.0)
-		{
-			m_modulo -= 1.0; //wrap
-		}
-
 		//unipolar to bipolar
-		double wave = 2.0*fabs(2.0*m_modulo-1.0)-1.0;
+		double wave = 2.0 * fabs(2.0 * modulo - 1.0) - 1.0;
 
 		return wave;
 	}
@@ -199,7 +175,7 @@ public:
 		double PolyBLEP = 0.0;
 
 		//--- LEFT side of discontinuity
-		if (modulo > 1.0-inc)
+		if (modulo >= 1.0 - inc)
 		{
 			//--- calculate distance
 			double t = (modulo - 1.0) / inc;
@@ -209,7 +185,7 @@ public:
 		}
 
 		//--- RIGHT side of discontinuty
-		else if (modulo < inc)
+		else if (modulo <= inc)
 		{
 			//--- calculate distance
 			double t = modulo / inc;
@@ -239,7 +215,7 @@ private:
 
 	// --- Discrete Plugin Variables 
 	int m_uOscType = 0;
-	enum class m_uOscTypeEnum { Saw_raw,Saw,Square,Triangle,Sin };	// to compare: if(compareEnumToInt(m_uOscTypeEnum::Saw_raw, m_uOscType)) etc... 
+	enum class m_uOscTypeEnum { Saw_raw,Saw,Square_Raw,Square,Triangle,Sin };	// to compare: if(compareEnumToInt(m_uOscTypeEnum::Saw_raw, m_uOscType)) etc... 
 
 	// **--0x1A7F--**
     // --- end member variables

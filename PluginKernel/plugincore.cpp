@@ -77,7 +77,7 @@ bool PluginCore::initPluginParameters()
 	addPluginParameter(piParam);
 
 	// --- discrete control: Oscilator
-	piParam = new PluginParameter(controlID::m_uOscType, "Oscilator", "Saw raw,Saw,Square,Triangle,Sin", "Sin");
+	piParam = new PluginParameter(controlID::m_uOscType, "Oscilator", "Saw raw,Saw,Square Raw,Square,Triangle,Sin", "Sin");
 	piParam->setBoundVariable(&m_uOscType, boundVariableType::kInt);
 	piParam->setIsDiscreteSwitch(true);
 	addPluginParameter(piParam);
@@ -213,38 +213,42 @@ bool PluginCore::processAudioFrame(ProcessFrameInfo& processFrameInfo)
 		m_inc = m_fo / m_fs;
 		m_PW = m_fDutyC;
 
-		
+		reModulo();
+
 
 		if (compareEnumToInt(m_uOscTypeEnum::Saw, m_uOscType))
 		{
-			//m_outputL = t_saw();
-			//m_outputR = t_saw();
-
-			m_outputL = t_saw() + doPolyBlep(m_modulo, m_inc, 1.0, false);
-			m_outputR = t_saw() + doPolyBlep(m_modulo, m_inc, 1.0, false);
+			m_outputL = t_saw(m_modulo) + doPolyBlep(m_modulo, m_inc, 1.0, false);
+			m_outputR = t_saw(m_modulo) + doPolyBlep(m_modulo, m_inc, 1.0, false);
 		}
 		else if (compareEnumToInt(m_uOscTypeEnum::Saw_raw, m_uOscType))
 		{
-			m_outputL = t_saw();
-			m_outputR = t_saw();
+			m_outputL = t_saw(m_modulo);
+			m_outputR = t_saw(m_modulo);
+		}
+		else if (compareEnumToInt(m_uOscTypeEnum::Square_Raw, m_uOscType))
+		{
+			m_outputL = t_sqw(m_modulo);
+			m_outputR = t_sqw(m_modulo);
 		}
 		else if (compareEnumToInt(m_uOscTypeEnum::Square, m_uOscType))
 		{
-			
-			m_outputL = t_sqw();
-			m_outputR = t_sqw();
+			double preSquare = t_saw(m_modulo) + doPolyBlep(m_modulo, m_inc, 1.0, false);
+			double preSquareNeg = t_saw((m_modulo - m_fDutyC/100)) + doPolyBlep(m_modulo - m_fDutyC / 100, m_inc, 1.0, false);
+			m_outputL = preSquare - preSquareNeg;
+			m_outputR = preSquare - preSquareNeg;
 		}
 		else if (compareEnumToInt(m_uOscTypeEnum::Triangle, m_uOscType))
 		{
-			m_outputL = t_tri();
-			m_outputR = t_tri();
+			m_outputL = t_tri(m_modulo);
+			m_outputR = t_tri(m_modulo);
 		}
 		else if (compareEnumToInt(m_uOscTypeEnum::Sin, m_uOscType))
 		{
-			m_modulo += m_inc;
-			m_outputL = sin(m_modulo*2*3.1417);
-			m_outputR = sin(m_modulo*2*3.1416);
+			m_outputL = sin(m_modulo * 2 * 3.1417);
+			m_outputR = sin(m_modulo * 2 * 3.1416);
 		}
+
 		
 
 		
@@ -544,7 +548,7 @@ bool PluginCore::initPluginPresets()
 	preset = new PresetInfo(index++, "Factory Preset");
 	initPresetParameters(preset->presetParameters);
 	setPresetParameter(preset->presetParameters, controlID::m_fFrecuencia, 440.000000);
-	setPresetParameter(preset->presetParameters, controlID::m_uOscType, 3.000000);
+	setPresetParameter(preset->presetParameters, controlID::m_uOscType, 4.000000);
 	setPresetParameter(preset->presetParameters, controlID::m_fDutyC, 50.000000);
 	addPreset(preset);
 
