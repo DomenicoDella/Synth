@@ -21,13 +21,18 @@
 // --- Plugin Variables controlID Enumeration 
 
 enum controlID {
-	m_fFrecuencia = 12,
+	m_fFreqOsc0 = 12,
 	m_uOscType = 2,
-	m_fDutyC = 13,
-	m_uLFOSel = 5,
-	m_fLFOFreq = 15,
-	m_fLFODutyC = 16,
-	m_uFLOon = 6
+	m_fDutyCOsc0 = 13,
+	m_uLFOSel = 7,
+	m_fLFOFreq = 17,
+	m_fLFODutyC = 18,
+	m_uFLOon = 8,
+	m_uOscType2 = 4,
+	m_uOsc0Mute = 3,
+	m_fFreqOsc1 = 14,
+	m_fDutyCOsc1 = 15,
+	m_uOsc1Mute = 5
 };
 
 	// **--0x0F1F--**
@@ -117,12 +122,21 @@ public:
 	double m_outputR = 0.0;
 	double m_outputL = 0.0;
 
+	double m_OscOut0 = 0.0;
+	double m_OscOut1 = 0.0;
+
+
 	double m_fs = audioProcDescriptor.sampleRate;
 
-	//Oscilator Variables
-	double m_moduloOsc = 0.0;
-	double m_foOsc = 440.0;
-	double m_incOsc = m_foOsc / m_fs;
+	//Oscilator 1 Variables
+	double m_moduloOsc0 = 0.0;
+	double m_foOsc0 = 440.0;
+	double m_incOsc0 = m_foOsc0 / m_fs;
+
+	//Oscilator 2 Variables
+	double m_moduloOsc1 = 0.0;
+	double m_foOsc1 = 440.0;
+	double m_incOsc1 = m_foOsc1 / m_fs;
 
 	//LFO variables
 	double m_moduloLFO = 0.0;
@@ -264,10 +278,12 @@ private:
 	//  **--0x07FD--**
 
 	// --- Continuous Plugin Variables 
-	double m_fFrecuencia = 0.0;
-	double m_fDutyC = 0.0;
+	double m_fFreqOsc0 = 0.0;
+	double m_fDutyCOsc0 = 0.0;
 	double m_fLFOFreq = 0.0;
 	double m_fLFODutyC = 0.0;
+	double m_fFreqOsc1 = 0.0;
+	double m_fDutyCOsc1 = 0.0;
 
 	// --- Discrete Plugin Variables 
 	int m_uOscType = 0;
@@ -278,6 +294,15 @@ private:
 
 	int m_uFLOon = 0;
 	enum class m_uFLOonEnum { SWITCH_OFF,SWITCH_ON };	// to compare: if(compareEnumToInt(m_uFLOonEnum::SWITCH_OFF, m_uFLOon)) etc... 
+
+	int m_uOscType2 = 0;
+	enum class m_uOscType2Enum { Saw_raw,Saw,Square_Raw,Square,Triangle,Sin };	// to compare: if(compareEnumToInt(m_uOscType2Enum::Saw_raw, m_uOscType2)) etc... 
+
+	int m_uOsc0Mute = 0;
+	enum class m_uOsc0MuteEnum { SWITCH_OFF,SWITCH_ON };	// to compare: if(compareEnumToInt(m_uOsc0MuteEnum::SWITCH_OFF, m_uOsc0Mute)) etc... 
+
+	int m_uOsc1Mute = 0;
+	enum class m_uOsc1MuteEnum { SWITCH_OFF,SWITCH_ON };	// to compare: if(compareEnumToInt(m_uOsc1MuteEnum::SWITCH_OFF, m_uOsc1Mute)) etc... 
 
 	// **--0x1A7F--**
     // --- end member variables

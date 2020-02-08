@@ -69,24 +69,24 @@ bool PluginCore::initPluginParameters()
 	// --- Declaration of Plugin Parameter Objects 
 	PluginParameter* piParam = nullptr;
 
-	// --- continuous control: Frecuencia
-	piParam = new PluginParameter(controlID::m_fFrecuencia, "Frecuencia", "Hz", controlVariableType::kDouble, 120.000000, 2000.000000, 440.000000, taper::kLinearTaper);
+	// --- continuous control: Freq Osc 1
+	piParam = new PluginParameter(controlID::m_fFreqOsc0, "Freq Osc 1", "Hz", controlVariableType::kDouble, 80.000000, 1500.000000, 440.000000, taper::kLinearTaper);
 	piParam->setParameterSmoothing(false);
 	piParam->setSmoothingTimeMsec(100.00);
-	piParam->setBoundVariable(&m_fFrecuencia, boundVariableType::kDouble);
+	piParam->setBoundVariable(&m_fFreqOsc0, boundVariableType::kDouble);
 	addPluginParameter(piParam);
 
-	// --- discrete control: Oscilator
-	piParam = new PluginParameter(controlID::m_uOscType, "Oscilator", "Saw raw,Saw,Square Raw,Square,Triangle,Sin", "Sin");
+	// --- discrete control: Oscillator 1
+	piParam = new PluginParameter(controlID::m_uOscType, "Oscillator 1", "Saw raw,Saw,Square Raw,Square,Triangle,Sin", "Sin");
 	piParam->setBoundVariable(&m_uOscType, boundVariableType::kInt);
 	piParam->setIsDiscreteSwitch(true);
 	addPluginParameter(piParam);
 
 	// --- continuous control: Duty Cycle
-	piParam = new PluginParameter(controlID::m_fDutyC, "Duty Cycle", "%", controlVariableType::kDouble, 20.000000, 80.000000, 50.000000, taper::kLinearTaper);
+	piParam = new PluginParameter(controlID::m_fDutyCOsc0, "Duty Cycle", "%", controlVariableType::kDouble, 20.000000, 80.000000, 50.000000, taper::kLinearTaper);
 	piParam->setParameterSmoothing(false);
 	piParam->setSmoothingTimeMsec(100.00);
-	piParam->setBoundVariable(&m_fDutyC, boundVariableType::kDouble);
+	piParam->setBoundVariable(&m_fDutyCOsc0, boundVariableType::kDouble);
 	addPluginParameter(piParam);
 
 	// --- discrete control: LFO wave
@@ -115,24 +115,56 @@ bool PluginCore::initPluginParameters()
 	piParam->setIsDiscreteSwitch(true);
 	addPluginParameter(piParam);
 
+	// --- discrete control: Oscillator 2
+	piParam = new PluginParameter(controlID::m_uOscType2, "Oscillator 2", "Saw raw,Saw,Square Raw,Square,Triangle,Sin", "Sin");
+	piParam->setBoundVariable(&m_uOscType2, boundVariableType::kInt);
+	piParam->setIsDiscreteSwitch(true);
+	addPluginParameter(piParam);
+
+	// --- discrete control: Mute Osc 1
+	piParam = new PluginParameter(controlID::m_uOsc0Mute, "Mute Osc 1", "SWITCH OFF,SWITCH ON", "SWITCH OFF");
+	piParam->setBoundVariable(&m_uOsc0Mute, boundVariableType::kInt);
+	piParam->setIsDiscreteSwitch(true);
+	addPluginParameter(piParam);
+
+	// --- continuous control: Freq Osc 2
+	piParam = new PluginParameter(controlID::m_fFreqOsc1, "Freq Osc 2", "Hz", controlVariableType::kDouble, 80.000000, 1500.000000, 440.000000, taper::kLinearTaper);
+	piParam->setParameterSmoothing(false);
+	piParam->setSmoothingTimeMsec(100.00);
+	piParam->setBoundVariable(&m_fFreqOsc1, boundVariableType::kDouble);
+	addPluginParameter(piParam);
+
+	// --- continuous control: Duty Cicle Osc 2
+	piParam = new PluginParameter(controlID::m_fDutyCOsc1, "Duty Cicle Osc 2", "Units", controlVariableType::kDouble, 20.000000, 80.000000, 50.000000, taper::kLinearTaper);
+	piParam->setParameterSmoothing(false);
+	piParam->setSmoothingTimeMsec(100.00);
+	piParam->setBoundVariable(&m_fDutyCOsc1, boundVariableType::kDouble);
+	addPluginParameter(piParam);
+
+	// --- discrete control: Mute Osc 2
+	piParam = new PluginParameter(controlID::m_uOsc1Mute, "Mute Osc 2", "SWITCH OFF,SWITCH ON", "SWITCH OFF");
+	piParam->setBoundVariable(&m_uOsc1Mute, boundVariableType::kInt);
+	piParam->setIsDiscreteSwitch(true);
+	addPluginParameter(piParam);
+
 	// --- Aux Attributes
 	AuxParameterAttribute auxAttribute;
 
 	// --- RAFX GUI attributes
-	// --- controlID::m_fFrecuencia
+	// --- controlID::m_fFreqOsc0
 	auxAttribute.reset(auxGUIIdentifier::guiControlData);
 	auxAttribute.setUintAttribute(2147483651);
-	setParamAuxAttribute(controlID::m_fFrecuencia, auxAttribute);
+	setParamAuxAttribute(controlID::m_fFreqOsc0, auxAttribute);
 
 	// --- controlID::m_uOscType
 	auxAttribute.reset(auxGUIIdentifier::guiControlData);
 	auxAttribute.setUintAttribute(805306368);
 	setParamAuxAttribute(controlID::m_uOscType, auxAttribute);
 
-	// --- controlID::m_fDutyC
+	// --- controlID::m_fDutyCOsc0
 	auxAttribute.reset(auxGUIIdentifier::guiControlData);
 	auxAttribute.setUintAttribute(2147483648);
-	setParamAuxAttribute(controlID::m_fDutyC, auxAttribute);
+	setParamAuxAttribute(controlID::m_fDutyCOsc0, auxAttribute);
 
 	// --- controlID::m_uLFOSel
 	auxAttribute.reset(auxGUIIdentifier::guiControlData);
@@ -153,6 +185,31 @@ bool PluginCore::initPluginParameters()
 	auxAttribute.reset(auxGUIIdentifier::guiControlData);
 	auxAttribute.setUintAttribute(1073741829);
 	setParamAuxAttribute(controlID::m_uFLOon, auxAttribute);
+
+	// --- controlID::m_uOscType2
+	auxAttribute.reset(auxGUIIdentifier::guiControlData);
+	auxAttribute.setUintAttribute(805306368);
+	setParamAuxAttribute(controlID::m_uOscType2, auxAttribute);
+
+	// --- controlID::m_uOsc0Mute
+	auxAttribute.reset(auxGUIIdentifier::guiControlData);
+	auxAttribute.setUintAttribute(1073741829);
+	setParamAuxAttribute(controlID::m_uOsc0Mute, auxAttribute);
+
+	// --- controlID::m_fFreqOsc1
+	auxAttribute.reset(auxGUIIdentifier::guiControlData);
+	auxAttribute.setUintAttribute(2147483663);
+	setParamAuxAttribute(controlID::m_fFreqOsc1, auxAttribute);
+
+	// --- controlID::m_fDutyCOsc1
+	auxAttribute.reset(auxGUIIdentifier::guiControlData);
+	auxAttribute.setUintAttribute(2147483648);
+	setParamAuxAttribute(controlID::m_fDutyCOsc1, auxAttribute);
+
+	// --- controlID::m_uOsc1Mute
+	auxAttribute.reset(auxGUIIdentifier::guiControlData);
+	auxAttribute.setUintAttribute(1073741829);
+	setParamAuxAttribute(controlID::m_uOsc1Mute, auxAttribute);
 
 
 	// **--0xEDA5--**
@@ -255,29 +312,59 @@ bool PluginCore::processAudioFrame(ProcessFrameInfo& processFrameInfo)
 
 		//Refresh variables
 		m_fs = audioProcDescriptor.sampleRate;
-		//Osc
-		m_foOsc = m_fFrecuencia;
-		m_incOsc = m_foOsc / m_fs;
+		//Osc1
+		m_foOsc0 = m_fFreqOsc0;
+		m_incOsc0 = m_foOsc0 / m_fs;
+		//Osc2
+		m_foOsc1 = m_fFreqOsc1;
+		m_incOsc1 = m_foOsc1 / m_fs;
 		//LFO
 		m_foLFO = m_fLFOFreq;
 		m_incLFO = m_foLFO / m_fs;
 		
 		//Refresh Output
+		
+		
 
-		if (m_uFLOon == 1)
+		if (m_uOsc0Mute == 1)
 		{
-			m_outputL = (waveSel(m_moduloLFO, m_incLFO, m_fLFODutyC, m_uLFOSel)) * waveSel(m_moduloOsc, m_incOsc, m_fDutyC, m_uOscType);
-			m_outputR = (waveSel(m_moduloLFO, m_incLFO, m_fLFODutyC, m_uLFOSel)) * waveSel(m_moduloOsc, m_incOsc, m_fDutyC, m_uOscType);
+			m_OscOut0 = waveSel(m_moduloOsc0, m_incOsc0, m_fDutyCOsc0, m_uOscType);
+		} 
+		else
+		{
+			m_OscOut0 = 0.0;
+			m_OscOut1 *= 2.0;
+
+		}
+
+		if (m_uOsc1Mute == 1)
+		{
+			m_OscOut1 = waveSel(m_moduloOsc1, m_incOsc1, m_fDutyCOsc1,m_uOscType2);
 		}
 		else
 		{
-			m_outputL = waveSel(m_moduloOsc, m_incOsc, m_fDutyC, m_uOscType);
-			m_outputR = waveSel(m_moduloOsc, m_incOsc, m_fDutyC, m_uOscType);
+			m_OscOut1 = 0.0;
+			m_OscOut0 *= 2.0;
+		}
+
+		m_preProcessL = 0.5 * m_OscOut0 + 0.5 * m_OscOut1;
+		m_preProcessR = 0.5 * m_OscOut0 + 0.5 * m_OscOut1;
+
+		if (m_uFLOon == 1)
+		{ 
+			m_outputL = (waveSel(m_moduloLFO, m_incLFO, m_fLFODutyC, m_uLFOSel)) * m_preProcessL;
+			m_outputR = (waveSel(m_moduloLFO, m_incLFO, m_fLFODutyC, m_uLFOSel)) * m_preProcessR;
+		}
+		else
+		{
+			m_outputL = m_preProcessL;
+			m_outputR = m_preProcessR;
 		}
 		
 		
 		//Increase module
-		m_moduloOsc = reModulo(m_moduloOsc, m_incOsc);
+		m_moduloOsc0 = reModulo(m_moduloOsc0, m_incOsc0);
+		m_moduloOsc1 = reModulo(m_moduloOsc1, m_incOsc1);
 		m_moduloLFO = reModulo(m_moduloLFO, m_incLFO);
 		
 		// --- output silence: change this with your signal render code
@@ -575,13 +662,18 @@ bool PluginCore::initPluginPresets()
 	// --- Preset: Factory Preset
 	preset = new PresetInfo(index++, "Factory Preset");
 	initPresetParameters(preset->presetParameters);
-	setPresetParameter(preset->presetParameters, controlID::m_fFrecuencia, 440.000000);
+	setPresetParameter(preset->presetParameters, controlID::m_fFreqOsc0, 439.999969);
 	setPresetParameter(preset->presetParameters, controlID::m_uOscType, 5.000000);
-	setPresetParameter(preset->presetParameters, controlID::m_fDutyC, 50.000000);
+	setPresetParameter(preset->presetParameters, controlID::m_fDutyCOsc0, 50.000000);
 	setPresetParameter(preset->presetParameters, controlID::m_uLFOSel, 5.000000);
 	setPresetParameter(preset->presetParameters, controlID::m_fLFOFreq, 0.200000);
 	setPresetParameter(preset->presetParameters, controlID::m_fLFODutyC, 50.000000);
 	setPresetParameter(preset->presetParameters, controlID::m_uFLOon, -0.000000);
+	setPresetParameter(preset->presetParameters, controlID::m_uOscType2, 5.000000);
+	setPresetParameter(preset->presetParameters, controlID::m_uOsc0Mute, -0.000000);
+	setPresetParameter(preset->presetParameters, controlID::m_fFreqOsc1, 439.999969);
+	setPresetParameter(preset->presetParameters, controlID::m_fDutyCOsc1, 50.000000);
+	setPresetParameter(preset->presetParameters, controlID::m_uOsc1Mute, -0.000000);
 	addPreset(preset);
 
 

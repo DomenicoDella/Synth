@@ -21,13 +21,18 @@
 	</custom>
 	<bitmaps />
 	<control-tags>
-		<control-tag name="controlID::m_fFrecuencia" tag="12" />
+		<control-tag name="controlID::m_fFreqOsc0" tag="12" />
 		<control-tag name="controlID::m_uOscType" tag="2" />
-		<control-tag name="controlID::m_fDutyC" tag="13" />
-		<control-tag name="controlID::m_uLFOSel" tag="5" />
-		<control-tag name="controlID::m_fLFOFreq" tag="15" />
-		<control-tag name="controlID::m_fLFODutyC" tag="16" />
-		<control-tag name="controlID::m_uFLOon" tag="6" />
+		<control-tag name="controlID::m_fDutyCOsc0" tag="13" />
+		<control-tag name="controlID::m_uLFOSel" tag="7" />
+		<control-tag name="controlID::m_fLFOFreq" tag="17" />
+		<control-tag name="controlID::m_fLFODutyC" tag="18" />
+		<control-tag name="controlID::m_uFLOon" tag="8" />
+		<control-tag name="controlID::m_uOscType2" tag="4" />
+		<control-tag name="controlID::m_uOsc0Mute" tag="3" />
+		<control-tag name="controlID::m_fFreqOsc1" tag="14" />
+		<control-tag name="controlID::m_fDutyCOsc1" tag="15" />
+		<control-tag name="controlID::m_uOsc1Mute" tag="5" />
 		<control-tag name="XY_TRACKPAD" tag="131073" />
 		<control-tag name="VECTOR_JOYSTICK" tag="131074" />
 		<control-tag name="PRESET_NAME" tag="131075" />
