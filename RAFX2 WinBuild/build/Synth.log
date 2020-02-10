@@ -1,9 +1,7 @@
 ﻿cl : command line warning D9035: option 'Gm' has been deprecated and will be removed in a future release
-  Rafx2Plugin.cpp
   plugincore.cpp
-C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginKernel\plugincore.cpp(313,17): warning C4244: 'initializing': conversion from 'double' to 'uint32_t', possible loss of data
-C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginKernel\plugincore.cpp(375,42): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginKernel\plugincore.cpp(377,43): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-  Generating Code...
+C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginKernel\plugincore.cpp(337,17): warning C4244: 'initializing': conversion from 'double' to 'uint32_t', possible loss of data
+C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginKernel\plugincore.cpp(400,63): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginKernel\plugincore.cpp(402,68): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
      Creating library C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\RAFX2 WinBuild\\build\Synth.lib and object C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\RAFX2 WinBuild\\build\Synth.exp
   Synth.vcxproj -> C:\Users\Domenico\AppData\Roaming\RackAFX 7.0\PlugIns\Synth.rafx2

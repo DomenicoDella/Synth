@@ -32,7 +32,9 @@ enum controlID {
 	m_uOsc0Mute = 3,
 	m_fFreqOsc1 = 14,
 	m_fDutyCOsc1 = 15,
-	m_uOsc1Mute = 5
+	m_uOsc1Mute = 5,
+	m_fVolumeOut = 0,
+	m_fPanOut = 10
 };
 
 	// **--0x0F1F--**
@@ -124,6 +126,8 @@ public:
 
 	double m_OscOut0 = 0.0;
 	double m_OscOut1 = 0.0;
+
+	double m_volumeOut = pow(10,m_fVolumeOut/20);
 
 
 	double m_fs = audioProcDescriptor.sampleRate;
@@ -286,6 +290,8 @@ private:
 	double m_fLFODutyC = 0.0;
 	double m_fFreqOsc1 = 0.0;
 	double m_fDutyCOsc1 = 0.0;
+	double m_fVolumeOut = 0.0;
+	double m_fPanOut = 0.0;
 
 	// --- Discrete Plugin Variables 
 	int m_uOscType = 0;

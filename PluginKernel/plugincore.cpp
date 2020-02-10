@@ -148,6 +148,20 @@ bool PluginCore::initPluginParameters()
 	piParam->setIsDiscreteSwitch(true);
 	addPluginParameter(piParam);
 
+	// --- continuous control: Volume
+	piParam = new PluginParameter(controlID::m_fVolumeOut, "Volume", "db", controlVariableType::kDouble, -15.000000, 5.000000, 0.000000, taper::kLinearTaper);
+	piParam->setParameterSmoothing(false);
+	piParam->setSmoothingTimeMsec(100.00);
+	piParam->setBoundVariable(&m_fVolumeOut, boundVariableType::kDouble);
+	addPluginParameter(piParam);
+
+	// --- continuous control: Pan
+	piParam = new PluginParameter(controlID::m_fPanOut, "Pan", "Units", controlVariableType::kDouble, 0.000000, 1.000000, 0.500000, taper::kLinearTaper);
+	piParam->setParameterSmoothing(false);
+	piParam->setSmoothingTimeMsec(100.00);
+	piParam->setBoundVariable(&m_fPanOut, boundVariableType::kDouble);
+	addPluginParameter(piParam);
+
 	// --- Aux Attributes
 	AuxParameterAttribute auxAttribute;
 
@@ -211,6 +225,16 @@ bool PluginCore::initPluginParameters()
 	auxAttribute.reset(auxGUIIdentifier::guiControlData);
 	auxAttribute.setUintAttribute(1073741829);
 	setParamAuxAttribute(controlID::m_uOsc1Mute, auxAttribute);
+
+	// --- controlID::m_fVolumeOut
+	auxAttribute.reset(auxGUIIdentifier::guiControlData);
+	auxAttribute.setUintAttribute(2147483654);
+	setParamAuxAttribute(controlID::m_fVolumeOut, auxAttribute);
+
+	// --- controlID::m_fPanOut
+	auxAttribute.reset(auxGUIIdentifier::guiControlData);
+	auxAttribute.setUintAttribute(2147483652);
+	setParamAuxAttribute(controlID::m_fPanOut, auxAttribute);
 
 
 	// **--0xEDA5--**
@@ -327,6 +351,7 @@ bool PluginCore::processAudioFrame(ProcessFrameInfo& processFrameInfo)
 		m_incLFO = m_foLFO / m_fs;
 		
 		//Refresh Output
+		m_volumeOut = pow(10, m_fVolumeOut / 20);
 		
 		
 
@@ -372,9 +397,9 @@ bool PluginCore::processAudioFrame(ProcessFrameInfo& processFrameInfo)
 		m_moduloLFO = reModulo(m_moduloLFO, m_incLFO);
 		
 		// --- output silence: change this with your signal render code
-		processFrameInfo.audioOutputFrame[0] = m_outputL;
+		processFrameInfo.audioOutputFrame[0] = m_volumeOut* (1 - m_fPanOut) *m_outputL;
 		if (processFrameInfo.channelIOConfig.outputChannelFormat == kCFStereo)
-			processFrameInfo.audioOutputFrame[1] = m_outputR;
+			processFrameInfo.audioOutputFrame[1] = m_volumeOut*(m_fPanOut)*m_outputR;
 
 		return true;	/// processed
 	}
@@ -677,6 +702,8 @@ bool PluginCore::initPluginPresets()
 	setPresetParameter(preset->presetParameters, controlID::m_fFreqOsc1, 439.999969);
 	setPresetParameter(preset->presetParameters, controlID::m_fDutyCOsc1, 50.000000);
 	setPresetParameter(preset->presetParameters, controlID::m_uOsc1Mute, -0.000000);
+	setPresetParameter(preset->presetParameters, controlID::m_fVolumeOut, 0.000000);
+	setPresetParameter(preset->presetParameters, controlID::m_fPanOut, 0.500000);
 	addPreset(preset);
 
 
