@@ -13,6 +13,7 @@
 #include "plugincore.h"
 #include "plugindescription.h"
 
+
 /**
 \brief PluginCore constructor is launching pad for object initialization
 
@@ -308,6 +309,9 @@ bool PluginCore::processAudioFrame(ProcessFrameInfo& processFrameInfo)
 	// --- Synth Plugin --- remove for FX plugins
 	if (getPluginType() == kSynthPlugin)
 	{
+		// --- midi
+		uint32_t note = 0.0;
+ 
 		// --- Oscilators
 
 		//Refresh variables
@@ -316,7 +320,7 @@ bool PluginCore::processAudioFrame(ProcessFrameInfo& processFrameInfo)
 		m_foOsc0 = m_fFreqOsc0;
 		m_incOsc0 = m_foOsc0 / m_fs;
 		//Osc2
-		m_foOsc1 = m_fFreqOsc1;
+		m_foOsc1 = m_fFreqOsc0;
 		m_incOsc1 = m_foOsc1 / m_fs;
 		//LFO
 		m_foLFO = m_fLFOFreq;
@@ -607,7 +611,6 @@ bool PluginCore::processMessage(MessageInfo& messageInfo)
 
 	return false; /// not handled
 }
-
 
 /**
 \brief process a MIDI event

@@ -128,6 +128,8 @@ public:
 
 	double m_fs = audioProcDescriptor.sampleRate;
 
+
+
 	//Oscilator 1 Variables
 	double m_moduloOsc0 = 0.0;
 	double m_foOsc0 = 440.0;
