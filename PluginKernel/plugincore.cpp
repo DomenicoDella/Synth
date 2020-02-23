@@ -71,7 +71,7 @@ bool PluginCore::initPluginParameters()
 	PluginParameter* piParam = nullptr;
 
 	// --- continuous control: Freq Osc 1
-	piParam = new PluginParameter(controlID::m_fFreqOsc0, "Freq Osc 1", "Hz", controlVariableType::kDouble, 80.000000, 1500.000000, 440.000000, taper::kLinearTaper);
+	piParam = new PluginParameter(controlID::m_fFreqOsc0, "Freq Osc 1", "Hz", controlVariableType::kDouble, 80.000000, 2000.000000, 440.000000, taper::kLinearTaper);
 	piParam->setParameterSmoothing(false);
 	piParam->setSmoothingTimeMsec(100.00);
 	piParam->setBoundVariable(&m_fFreqOsc0, boundVariableType::kDouble);
@@ -175,7 +175,7 @@ bool PluginCore::initPluginParameters()
 	addPluginParameter(piParam);
 
 	// --- continuous control: LPF Freq
-	piParam = new PluginParameter(controlID::m_fLPFfo, "LPF Freq", "Hz", controlVariableType::kDouble, 3000.000000, 5000.000000, 4000.000000, taper::kLinearTaper);
+	piParam = new PluginParameter(controlID::m_fLPFfo, "LPF Freq", "Hz", controlVariableType::kDouble, 3500.000000, 5000.000000, 4000.000000, taper::kLinearTaper);
 	piParam->setParameterSmoothing(false);
 	piParam->setSmoothingTimeMsec(100.00);
 	piParam->setBoundVariable(&m_fLPFfo, boundVariableType::kDouble);
@@ -202,10 +202,50 @@ bool PluginCore::initPluginParameters()
 	addPluginParameter(piParam);
 
 	// --- continuous control: BPF Band 1
-	piParam = new PluginParameter(controlID::m_fBPFfb_1, "BPF Band 1", "Hz", controlVariableType::kDouble, 10.000000, 1000.000000, 200.000000, taper::kLinearTaper);
+	piParam = new PluginParameter(controlID::m_fBPFfb_1, "BPF Band 1", "Hz", controlVariableType::kDouble, 500.000000, 1500.000000, 750.000000, taper::kLinearTaper);
 	piParam->setParameterSmoothing(false);
 	piParam->setSmoothingTimeMsec(100.00);
 	piParam->setBoundVariable(&m_fBPFfb_1, boundVariableType::kDouble);
+	addPluginParameter(piParam);
+
+	// --- discrete control: BPF2 On
+	piParam = new PluginParameter(controlID::m_uBPFon_2, "BPF2 On", "SWITCH OFF,SWITCH ON", "SWITCH OFF");
+	piParam->setBoundVariable(&m_uBPFon_2, boundVariableType::kInt);
+	piParam->setIsDiscreteSwitch(true);
+	addPluginParameter(piParam);
+
+	// --- continuous control: BPF Band 2
+	piParam = new PluginParameter(controlID::m_fBPFfb_2, "BPF Band 2", "Hz", controlVariableType::kDouble, 500.000000, 1500.000000, 750.000000, taper::kLinearTaper);
+	piParam->setParameterSmoothing(false);
+	piParam->setSmoothingTimeMsec(100.00);
+	piParam->setBoundVariable(&m_fBPFfb_2, boundVariableType::kDouble);
+	addPluginParameter(piParam);
+
+	// --- continuous control: BPF Freq 2
+	piParam = new PluginParameter(controlID::m_fBPFfo_2, "BPF Freq 2", "Hz", controlVariableType::kDouble, 1500.000000, 2500.000000, 1750.000000, taper::kLinearTaper);
+	piParam->setParameterSmoothing(false);
+	piParam->setSmoothingTimeMsec(100.00);
+	piParam->setBoundVariable(&m_fBPFfo_2, boundVariableType::kDouble);
+	addPluginParameter(piParam);
+
+	// --- discrete control: BPF3 On
+	piParam = new PluginParameter(controlID::m_uBPFon_3, "BPF3 On", "SWITCH OFF,SWITCH ON", "SWITCH OFF");
+	piParam->setBoundVariable(&m_uBPFon_3, boundVariableType::kInt);
+	piParam->setIsDiscreteSwitch(true);
+	addPluginParameter(piParam);
+
+	// --- continuous control: BPF Freq 3
+	piParam = new PluginParameter(controlID::m_fBPFfo_3, "BPF Freq 3", "Hz", controlVariableType::kDouble, 2500.000000, 3500.000000, 2750.000000, taper::kLinearTaper);
+	piParam->setParameterSmoothing(false);
+	piParam->setSmoothingTimeMsec(100.00);
+	piParam->setBoundVariable(&m_fBPFfo_3, boundVariableType::kDouble);
+	addPluginParameter(piParam);
+
+	// --- continuous control: BPF Band 3
+	piParam = new PluginParameter(controlID::m_fBPFfb_3, "BPF Band 3", "Hz", controlVariableType::kDouble, 500.000000, 1500.000000, 750.000000, taper::kLinearTaper);
+	piParam->setParameterSmoothing(false);
+	piParam->setSmoothingTimeMsec(100.00);
+	piParam->setBoundVariable(&m_fBPFfb_3, boundVariableType::kDouble);
 	addPluginParameter(piParam);
 
 	// --- Aux Attributes
@@ -215,6 +255,10 @@ bool PluginCore::initPluginParameters()
 	// --- controlID::m_fFreqOsc0
 	auxAttribute.reset(auxGUIIdentifier::guiControlData);
 	auxAttribute.setUintAttribute(2147483651);
+	setParamAuxAttribute(controlID::m_fFreqOsc0, auxAttribute);
+
+	auxAttribute.reset(auxGUIIdentifier::midiControlData);
+	auxAttribute.setUintAttribute(2147680256);
 	setParamAuxAttribute(controlID::m_fFreqOsc0, auxAttribute);
 
 	// --- controlID::m_uOscType
@@ -316,6 +360,36 @@ bool PluginCore::initPluginParameters()
 	auxAttribute.reset(auxGUIIdentifier::guiControlData);
 	auxAttribute.setUintAttribute(2147483664);
 	setParamAuxAttribute(controlID::m_fBPFfb_1, auxAttribute);
+
+	// --- controlID::m_uBPFon_2
+	auxAttribute.reset(auxGUIIdentifier::guiControlData);
+	auxAttribute.setUintAttribute(1073741829);
+	setParamAuxAttribute(controlID::m_uBPFon_2, auxAttribute);
+
+	// --- controlID::m_fBPFfb_2
+	auxAttribute.reset(auxGUIIdentifier::guiControlData);
+	auxAttribute.setUintAttribute(2147483664);
+	setParamAuxAttribute(controlID::m_fBPFfb_2, auxAttribute);
+
+	// --- controlID::m_fBPFfo_2
+	auxAttribute.reset(auxGUIIdentifier::guiControlData);
+	auxAttribute.setUintAttribute(2147483648);
+	setParamAuxAttribute(controlID::m_fBPFfo_2, auxAttribute);
+
+	// --- controlID::m_uBPFon_3
+	auxAttribute.reset(auxGUIIdentifier::guiControlData);
+	auxAttribute.setUintAttribute(1073741829);
+	setParamAuxAttribute(controlID::m_uBPFon_3, auxAttribute);
+
+	// --- controlID::m_fBPFfo_3
+	auxAttribute.reset(auxGUIIdentifier::guiControlData);
+	auxAttribute.setUintAttribute(2147483648);
+	setParamAuxAttribute(controlID::m_fBPFfo_3, auxAttribute);
+
+	// --- controlID::m_fBPFfb_3
+	auxAttribute.reset(auxGUIIdentifier::guiControlData);
+	auxAttribute.setUintAttribute(2147483664);
+	setParamAuxAttribute(controlID::m_fBPFfb_3, auxAttribute);
 
 
 	// **--0xEDA5--**
@@ -448,8 +522,8 @@ bool PluginCore::processAudioFrame(ProcessFrameInfo& processFrameInfo)
 		filterSelect();
 
 		//Refresh de output
-		m_outputL = m_posBPF1_L;
-		m_outputR = m_posBPF1_R;
+		m_outputL = m_postFilter_R;
+		m_outputR = m_postFilter_R;
 		
 		
 		//Increase module
@@ -465,9 +539,8 @@ bool PluginCore::processAudioFrame(ProcessFrameInfo& processFrameInfo)
 		return true;	/// processed
 	}
 
-	
-	
 
+	
 
     // --- FX Plugin:
     if(processFrameInfo.channelIOConfig.inputChannelFormat == kCFMono &&
@@ -751,7 +824,7 @@ bool PluginCore::initPluginPresets()
 	// --- Preset: Factory Preset
 	preset = new PresetInfo(index++, "Factory Preset");
 	initPresetParameters(preset->presetParameters);
-	setPresetParameter(preset->presetParameters, controlID::m_fFreqOsc0, 439.999969);
+	setPresetParameter(preset->presetParameters, controlID::m_fFreqOsc0, 440.000000);
 	setPresetParameter(preset->presetParameters, controlID::m_uOscType, 5.000000);
 	setPresetParameter(preset->presetParameters, controlID::m_fDutyCOsc0, 50.000000);
 	setPresetParameter(preset->presetParameters, controlID::m_uLFOSel, 5.000000);
@@ -771,7 +844,13 @@ bool PluginCore::initPluginPresets()
 	setPresetParameter(preset->presetParameters, controlID::m_fHPFfo, 80.000000);
 	setPresetParameter(preset->presetParameters, controlID::m_uBPFon_1, -0.000000);
 	setPresetParameter(preset->presetParameters, controlID::m_fBPFfo_1, 750.000000);
-	setPresetParameter(preset->presetParameters, controlID::m_fBPFfb_1, 200.000000);
+	setPresetParameter(preset->presetParameters, controlID::m_fBPFfb_1, 750.000000);
+	setPresetParameter(preset->presetParameters, controlID::m_uBPFon_2, -0.000000);
+	setPresetParameter(preset->presetParameters, controlID::m_fBPFfb_2, 750.000000);
+	setPresetParameter(preset->presetParameters, controlID::m_fBPFfo_2, 1750.000000);
+	setPresetParameter(preset->presetParameters, controlID::m_uBPFon_3, -0.000000);
+	setPresetParameter(preset->presetParameters, controlID::m_fBPFfo_3, 2750.000000);
+	setPresetParameter(preset->presetParameters, controlID::m_fBPFfb_3, 750.000000);
 	addPreset(preset);
 
 

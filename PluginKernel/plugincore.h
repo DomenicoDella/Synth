@@ -35,13 +35,19 @@ enum controlID {
 	m_uOsc1Mute = 5,
 	m_fVolumeOut = 0,
 	m_fPanOut = 10,
-	m_uLPFon = 30,
-	m_uHPFon = 31,
-	m_fLPFfo = 40,
-	m_fHPFfo = 41,
-	m_uBPFon_1 = 32,
-	m_fBPFfo_1 = 42,
-	m_fBPFfb_1 = 52
+	m_uLPFon = 34,
+	m_uHPFon = 30,
+	m_fLPFfo = 44,
+	m_fHPFfo = 40,
+	m_uBPFon_1 = 31,
+	m_fBPFfo_1 = 41,
+	m_fBPFfb_1 = 51,
+	m_uBPFon_2 = 32,
+	m_fBPFfb_2 = 52,
+	m_fBPFfo_2 = 42,
+	m_uBPFon_3 = 33,
+	m_fBPFfo_3 = 43,
+	m_fBPFfb_3 = 53
 };
 
 	// **--0x0F1F--**
@@ -137,6 +143,15 @@ public:
 	double m_posBPF1_R = 0.0;
 	double m_posBPF1_L = 0.0;
 
+	double m_posBPF2_R = 0.0;
+	double m_posBPF2_L = 0.0;
+
+	double m_posBPF3_R = 0.0;
+	double m_posBPF3_L = 0.0;
+
+	double m_postFilter_R = 0.0;
+	double m_postFilter_L = 0.0;
+
 	double m_outputR = 0.0;
 	double m_outputL = 0.0;
 
@@ -176,9 +191,15 @@ public:
 	double m_HPF_y[2] = { 0,0 };
 	double m_HPF_x[2] = { 0,0 };
 
-	//HPF variables
+	//BPF variables
 	double m_BPF1_y[2] = { 0,0 };
 	double m_BPF1_x[2] = { 0,0 };
+
+	double m_BPF2_y[2] = { 0,0 };
+	double m_BPF2_x[2] = { 0,0 };
+
+	double m_BPF3_y[2] = { 0,0 };
+	double m_BPF3_x[2] = { 0,0 };
 
 
 
@@ -409,7 +430,7 @@ public:
 		double a1 = 0;
 		double a2 = 0;
 		double b0 = 0;
-		double b1 = 0;
+		double b1 = 0; 
 		double b2 = 0;
 		double y = 0;
 
@@ -463,6 +484,30 @@ public:
 			m_posBPF1_L = m_posHPF_L;
 			m_posBPF1_R = m_posHPF_R;
 		}
+
+		if (m_uBPFon_2 == 1)
+		{
+			m_posBPF2_L = BPF(m_posBPF1_L, m_fBPFfo_2, m_fBPFfb_2, m_BPF2_x, m_BPF2_y);
+			m_posBPF2_R = BPF(m_posBPF1_R, m_fBPFfo_2, m_fBPFfb_2, m_BPF2_x, m_BPF2_y);
+		}
+		else
+		{
+			m_posBPF2_L = m_posBPF1_L;
+			m_posBPF2_R = m_posBPF1_R;
+		}
+		if (m_uBPFon_3 == 1)
+		{
+			m_posBPF3_L = BPF(m_posBPF2_L, m_fBPFfo_3, m_fBPFfb_3, m_BPF3_x, m_BPF3_y);
+			m_posBPF3_R = BPF(m_posBPF2_R, m_fBPFfo_3, m_fBPFfb_3, m_BPF3_x, m_BPF3_y);
+		}
+		else
+		{
+			m_posBPF3_L = m_posBPF2_L;
+			m_posBPF3_R = m_posBPF2_R;
+		}
+
+		m_postFilter_L = m_posBPF3_L;
+		m_postFilter_R = m_posBPF3_R;
 	}
 
 
@@ -485,6 +530,10 @@ private:
 	double m_fHPFfo = 0.0;
 	double m_fBPFfo_1 = 0.0;
 	double m_fBPFfb_1 = 0.0;
+	double m_fBPFfb_2 = 0.0;
+	double m_fBPFfo_2 = 0.0;
+	double m_fBPFfo_3 = 0.0;
+	double m_fBPFfb_3 = 0.0;
 
 	// --- Discrete Plugin Variables 
 	int m_uOscType = 0;
@@ -513,6 +562,12 @@ private:
 
 	int m_uBPFon_1 = 0;
 	enum class m_uBPFon_1Enum { SWITCH_OFF,SWITCH_ON };	// to compare: if(compareEnumToInt(m_uBPFon_1Enum::SWITCH_OFF, m_uBPFon_1)) etc... 
+
+	int m_uBPFon_2 = 0;
+	enum class m_uBPFon_2Enum { SWITCH_OFF,SWITCH_ON };	// to compare: if(compareEnumToInt(m_uBPFon_2Enum::SWITCH_OFF, m_uBPFon_2)) etc... 
+
+	int m_uBPFon_3 = 0;
+	enum class m_uBPFon_3Enum { SWITCH_OFF,SWITCH_ON };	// to compare: if(compareEnumToInt(m_uBPFon_3Enum::SWITCH_OFF, m_uBPFon_3)) etc... 
 
 	// **--0x1A7F--**
     // --- end member variables
