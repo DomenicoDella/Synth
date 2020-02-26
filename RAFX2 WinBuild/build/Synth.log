@@ -1,7 +1,9 @@
 ﻿cl : command line warning D9035: option 'Gm' has been deprecated and will be removed in a future release
   plugincore.cpp
-C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginKernel\plugincore.cpp(492,17): warning C4244: 'initializing': conversion from 'double' to 'uint32_t', possible loss of data
-C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginKernel\plugincore.cpp(535,71): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginKernel\plugincore.cpp(537,66): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginKernel\plugincore.cpp(512,17): warning C4244: 'initializing': conversion from 'double' to 'uint32_t', possible loss of data
+C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginKernel\plugincore.cpp(554,50): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginKernel\plugincore.cpp(556,44): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginKernel\plugincore.cpp(559,71): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginKernel\plugincore.cpp(561,66): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
      Creating library C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\RAFX2 WinBuild\\build\Synth.lib and object C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\RAFX2 WinBuild\\build\Synth.exp
   Synth.vcxproj -> C:\Users\Domenico\AppData\Roaming\RackAFX 7.0\PlugIns\Synth.rafx2

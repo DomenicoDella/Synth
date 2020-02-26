@@ -47,7 +47,9 @@ enum controlID {
 	m_fBPFfo_2 = 42,
 	m_uBPFon_3 = 33,
 	m_fBPFfo_3 = 43,
-	m_fBPFfb_3 = 53
+	m_fBPFfb_3 = 53,
+	m_fLeftVolume = 36,
+	m_fRightVolume = 37
 };
 
 	// **--0x0F1F--**
@@ -568,6 +570,10 @@ private:
 
 	int m_uBPFon_3 = 0;
 	enum class m_uBPFon_3Enum { SWITCH_OFF,SWITCH_ON };	// to compare: if(compareEnumToInt(m_uBPFon_3Enum::SWITCH_OFF, m_uBPFon_3)) etc... 
+
+	// --- Meter Plugin Variables
+	float m_fLeftVolume = 0.f;
+	float m_fRightVolume = 0.f;
 
 	// **--0x1A7F--**
     // --- end member variables

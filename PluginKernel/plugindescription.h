@@ -50,7 +50,7 @@ const char* kVendorURL = "www.yourcompany.com";
 const char* kVendorEmail = "help@yourcompany.com";
 
 // --- VST3 & AAX only
-const int32_t kFourCharCode = '3333'; /// must be unique for each plugin in your company
+const int32_t kFourCharCode = 'ffff'; /// must be unique for each plugin in your company
 
 // --- VST3 specific, see www.willpirkle.com/forum/ for information on generating FUIDs
 //     use GUIDGEN.exe from compiler/tools (Win) or UUID Generator (free Mac App)
@@ -58,7 +58,7 @@ const char* kVSTFUID = "{CF59FAC0-4CA5-441D-9116-0AFB60D488C1}"; /// NOTE: you n
 
 // --- AAX specific
 const int32_t kManufacturerID = 'VNDR';
-const int32_t kAAXProductID = '3333';
+const int32_t kAAXProductID = 'ffff';
 
 // --- Plugin Options
 const bool kWantSidechain = false;
@@ -70,4 +70,8 @@ const uint32_t kVST3SAAGranularity = 1;
 const uint32_t kAAXCategory = 0;
 
 #endif
+
+
+
+
 

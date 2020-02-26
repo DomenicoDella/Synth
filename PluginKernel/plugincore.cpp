@@ -248,6 +248,16 @@ bool PluginCore::initPluginParameters()
 	piParam->setBoundVariable(&m_fBPFfb_3, boundVariableType::kDouble);
 	addPluginParameter(piParam);
 
+	// --- meter control: LEFT
+	piParam = new PluginParameter(controlID::m_fLeftVolume, "LEFT", 10.00, 500.00, ENVELOPE_DETECT_MODE_RMS, meterCal::kLogMeter);
+	piParam->setBoundVariable(&m_fLeftVolume, boundVariableType::kFloat);
+	addPluginParameter(piParam);
+
+	// --- meter control: RIGHT
+	piParam = new PluginParameter(controlID::m_fRightVolume, "RIGHT", 10.00, 500.00, ENVELOPE_DETECT_MODE_RMS, meterCal::kLogMeter);
+	piParam->setBoundVariable(&m_fRightVolume, boundVariableType::kFloat);
+	addPluginParameter(piParam);
+
 	// --- Aux Attributes
 	AuxParameterAttribute auxAttribute;
 
@@ -391,6 +401,16 @@ bool PluginCore::initPluginParameters()
 	auxAttribute.setUintAttribute(2147483664);
 	setParamAuxAttribute(controlID::m_fBPFfb_3, auxAttribute);
 
+	// --- controlID::m_fLeftVolume
+	auxAttribute.reset(auxGUIIdentifier::guiControlData);
+	auxAttribute.setUintAttribute(201326592);
+	setParamAuxAttribute(controlID::m_fLeftVolume, auxAttribute);
+
+	// --- controlID::m_fRightVolume
+	auxAttribute.reset(auxGUIIdentifier::guiControlData);
+	auxAttribute.setUintAttribute(201326592);
+	setParamAuxAttribute(controlID::m_fRightVolume, auxAttribute);
+
 
 	// **--0xEDA5--**
    
@@ -531,6 +551,10 @@ bool PluginCore::processAudioFrame(ProcessFrameInfo& processFrameInfo)
 		m_moduloOsc1 = reModulo(m_moduloOsc1, m_incOsc1);
 		m_moduloLFO = reModulo(m_moduloLFO, m_incLFO);
 		
+		m_fRightVolume = m_volumeOut * (1 - m_fPanOut) * m_outputL;
+		
+		m_fLeftVolume = m_volumeOut * (m_fPanOut)*m_outputR;
+				
 		// --- output silence: change this with your signal render code
 		processFrameInfo.audioOutputFrame[0] = m_volumeOut* (1 - m_fPanOut) *m_outputL;
 		if (processFrameInfo.channelIOConfig.outputChannelFormat == kCFStereo)
@@ -887,6 +911,9 @@ bool PluginCore::initPluginDescriptors()
 
     // --- AU
     apiSpecificInfo.auBundleID = kAUBundleID;
+	apiSpecificInfo.auBundleName = kAUBundleName;
+	apiSpecificInfo.auBundleName = kAUBundleName;
+	apiSpecificInfo.auBundleName = kAUBundleName;
 	apiSpecificInfo.auBundleName = kAUBundleName;   /* MacOS only: this MUST match the bundle identifier in your info.plist file */
     apiSpecificInfo.auBundleName = kAUBundleName;
 
@@ -913,3 +940,4 @@ const char* PluginCore::getAUCocoaViewFactoryName(){ return AU_COCOA_VIEWFACTORY
 pluginType PluginCore::getPluginType(){ return kPluginType; }
 const char* PluginCore::getVSTFUID(){ return kVSTFUID; }
 int32_t PluginCore::getFourCharCode(){ return kFourCharCode; }
+
