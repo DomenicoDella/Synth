@@ -1,48 +1,9 @@
 ﻿cl : command line warning D9035: option 'Gm' has been deprecated and will be removed in a future release
-  Rafx2PluginBase.cpp
   Rafx2Plugin.cpp
-C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\CustomControls\customcontrols.h(16,10): fatal error C1083: Cannot open include file: 'vstgui/lib/controls/cbuttons.h': No such file or directory
-  RackAFXDLL.cpp
-  fxobjects.cpp
-C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginObjects\fxobjects.h(333,32): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginObjects\fxobjects.h(649,12): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginObjects\fxobjects.h(650,12): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginObjects\fxobjects.h(741,11): warning C4018: '<=': signed/unsigned mismatch
-C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginObjects\fxobjects.h(743,15): warning C4018: '>': signed/unsigned mismatch
-C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginObjects\fxobjects.h(743,43): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginObjects\fxobjects.h(756,11): warning C4018: '>=': signed/unsigned mismatch
-C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginObjects\fxobjects.h(758,16): warning C4018: '>': signed/unsigned mismatch
-C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginObjects\fxobjects.h(758,43): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginObjects\fxobjects.h(771,11): warning C4018: '>=': signed/unsigned mismatch
-C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginObjects\fxobjects.h(771,38): warning C4018: '<=': signed/unsigned mismatch
-C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginObjects\fxobjects.h(773,16): warning C4018: '>': signed/unsigned mismatch
-C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginObjects\fxobjects.h(773,43): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginObjects\fxobjects.h(775,16): warning C4018: '>': signed/unsigned mismatch
-C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginObjects\fxobjects.h(775,44): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginObjects\fxobjects.h(1088,26): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginObjects\fxobjects.h(1110,12): warning C4018: '>=': signed/unsigned mismatch
-C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginObjects\fxobjects.h(1130,11): warning C4018: '>=': signed/unsigned mismatch
-C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginObjects\fxobjects.h(2788,39): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginObjects\fxobjects.h(2839,20): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginObjects\fxobjects.h(2842,20): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginObjects\fxobjects.h(2995,20): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginObjects\fxobjects.h(3353,15): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginObjects\fxobjects.h(4888,29): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginObjects\fxobjects.h(4891,29): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginObjects\fxobjects.h(4892,29): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginObjects\fxobjects.h(8704,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginObjects\fxobjects.h(8708,20): warning C4018: '<=': signed/unsigned mismatch
-  pluginparameter.cpp
-  plugingui.cpp
-C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\CustomControls\customcontrols.h(16,10): fatal error C1083: Cannot open include file: 'vstgui/lib/controls/cbuttons.h': No such file or directory
   plugincore.cpp
-  pluginbase.cpp
-  customviews.cpp
-C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\CustomControls\customviews.h(16,10): fatal error C1083: Cannot open include file: 'vstgui/vstgui.h': No such file or directory
-  customcontrols.cpp
-C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\CustomControls\customcontrols.h(16,10): fatal error C1083: Cannot open include file: 'vstgui/lib/controls/cbuttons.h': No such file or directory
-  vstgui_win32.cpp
-c1xx : fatal error C1083: Cannot open source file: '..\..\vstgui4\vstgui\vstgui_win32.cpp': No such file or directory
-  vstgui_uidescription_win32.cpp
-c1xx : fatal error C1083: Cannot open source file: '..\..\vstgui4\vstgui\vstgui_uidescription_win32.cpp': No such file or directory
+C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginKernel\plugincore.cpp(313,17): warning C4244: 'initializing': conversion from 'double' to 'uint32_t', possible loss of data
+C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginKernel\plugincore.cpp(375,42): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\PluginKernel\plugincore.cpp(377,43): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   Generating Code...
+     Creating library C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\RAFX2 WinBuild\\build\Synth.lib and object C:\Users\Domenico\Documents\U\Quinto_Año\Proyecto_de_graduacion\Synth\Synth\RAFX2 WinBuild\\build\Synth.exp
+  Synth.vcxproj -> C:\Users\Domenico\AppData\Roaming\RackAFX 7.0\PlugIns\Synth.rafx2
